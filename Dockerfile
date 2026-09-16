@@ -2,7 +2,7 @@
 FROM maven:3.9.6-eclipse-temurin-17 AS build
 WORKDIR /app
 COPY pdcc/pdcc/ .
-RUN mvn clean package -DskipTests
+RUN mvn clean package -Dmaven.test.skip=true
 
 # Etapa 2: Execução da aplicação com JDK 17
 FROM eclipse-temurin:17-jre

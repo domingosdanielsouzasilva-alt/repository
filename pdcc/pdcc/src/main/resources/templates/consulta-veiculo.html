@@ -1,0 +1,42 @@
+<!DOCTYPE html> <html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>PDCC - Consulta Pública de Prontuário</title>
+    <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+<body>
+<main class="sem-menu">
+    <h1>Prontuário Técnico do Veículo</h1>
+    <div class="card">
+        <h2 th:text="${veiculo.modelo + ' - Placa: ' + veiculo.placa}">Modelo - Placa</h2>
+        <p><strong>Ano:</strong> <span th:text="${veiculo.ano}">Ano</span></p>
+        <p><strong>Cor:</strong> <span th:text="${veiculo.cor}">Cor</span></p>
+        <p><em>* Consulta pública limitada para proteção de dados cadastrais conforme LGPD.</em></p>
+    </div>
+
+    <h2>Histórico de Manutenções Realizadas</h2>
+    <p th:if="${#lists.isEmpty(servicos)}">Nenhum serviço registrado para este veículo.</p>
+
+    <table th:if="${!#lists.isEmpty(servicos)}">
+        <thead>
+        <tr>
+            <th>Data</th>
+            <th>Diagnóstico Técnico</th>
+            <th>Serviço Executado</th>
+            <th>Peças Substituídas</th>
+            <th>Garantia até</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="s : ${servicos}">
+            <td th:text="${s.dataServico}"></td>
+            <td th:text="${s.diagnostico}"></td>
+            <td th:text="${s.servicoExecutado}"></td>
+            <td th:text="${s.pecasTrocadas}"></td>
+            <td th:text="${s.garantiaFim}"></td>
+        </tr>
+        </tbody>
+    </table>
+</main>
+</body>
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="pt-br"
+      xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="UTF-8">
+    <title>PDCC - Histórico do Veículo</title>
+
+    <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+
+<body>
+
+<nav>
+    <a th:href="@{/}">Dashboard</a>
+    <a th:href="@{/usuarios}" sec:authorize="hasRole('ADMIN')">Usuários</a>
+    <a th:href="@{/clientes}">Clientes</a>
+    <a th:href="@{/veiculos}">Veículos</a>
+    <a th:href="@{/servicos}">Serviços</a>
+    <a th:href="@{/garantias}">Garantias</a>
+    <a th:href="@{/veiculos/qrcodes}">QR Codes</a>
+
+    <form th:action="@{/logout}" method="post">
+        <button type="submit">Sair</button>
+    </form>
+</nav>
+
+<main>
+
+    <h1>Histórico do Veículo</h1>
+
+    <div class="card">
+        <h2 th:text="${veiculo.modelo + ' - ' + veiculo.placa}">Modelo - Placa</h2>
+
+        <p>
+            <strong>Cliente:</strong>
+            <span th:text="${veiculo.cliente.nome}">Nome do cliente</span>
+        </p>
+
+        <p>
+            <strong>Ano:</strong>
+            <span th:text="${veiculo.ano}">Ano</span>
+        </p>
+
+        <p>
+            <strong>Cor:</strong>
+            <span th:text="${veiculo.cor}">Cor</span>
+        </p>
+    </div>
+
+    <h2>Serviços Realizados</h2>
+
+    <p th:if="${#lists.isEmpty(servicos)}">
+        Nenhum serviço registrado para este veículo.
+    </p>
+
+    <table th:if="${!#lists.isEmpty(servicos)}">
+        <thead>
+        <tr>
+            <th>Data</th>
+            <th>Diagnóstico</th>
+            <th>Serviço Executado</th>
+            <th>Peças Trocadas</th>
+            <th>Valor</th>
+            <th>Garantia até</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="s : ${servicos}">
+
+            <td th:text="${s.dataServico}"></td>
+
+            <td th:text="${s.diagnostico}"></td>
+
+            <td th:text="${s.servicoExecutado}"></td>
+
+            <td th:text="${s.pecasTrocadas}"></td>
+
+            <td th:text="${s.valorServico != null ? 'R$ ' + #numbers.formatDecimal(s.valorServico, 1, 2) : 'R$ 0,00'}"></td>
+
+            <td th:text="${s.garantiaFim}"></td>
+
+        </tr>
+        </tbody>
+    </table>
+
+</main>
+
+</body>
+</html>

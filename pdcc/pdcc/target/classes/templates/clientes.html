@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt-br"
+      xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="UTF-8">
+    <title>PDCC - Clientes</title>
+
+    <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+
+<body>
+
+<nav>
+    <a th:href="@{/}">Dashboard</a>
+    <a th:href="@{/usuarios}" sec:authorize="hasRole('ADMIN')">Usuários</a>
+    <a th:href="@{/clientes}">Clientes</a>
+    <a th:href="@{/veiculos}">Veículos</a>
+    <a th:href="@{/servicos}">Serviços</a>
+    <a th:href="@{/garantias}">Garantias</a>
+    <a th:href="@{/veiculos/qrcodes}">QR Codes</a>
+
+    <form th:action="@{/logout}" method="post">
+        <button type="submit">Sair</button>
+    </form>
+</nav>
+
+<main>
+
+    <h1>Cadastro de Clientes</h1>
+
+    <form th:action="@{/clientes}" th:object="${cliente}" method="post">
+
+        <input type="hidden" th:field="*{id}">
+
+        <label>Nome:</label><br>
+        <input type="text" th:field="*{nome}" required>
+
+        <label>Telefone:</label><br>
+        <input type="text" th:field="*{telefone}">
+
+        <label>CPF:</label><br>
+        <input type="text" th:field="*{cpf}">
+
+        <label>Endereço:</label><br>
+        <input type="text" th:field="*{endereco}">
+
+        <br>
+        <button type="submit">Salvar Cliente</button>
+
+    </form>
+
+    <h2>Clientes Cadastrados</h2>
+
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Telefone</th>
+            <th>CPF</th>
+            <th>Endereço</th>
+            <th>Ações</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="c : ${clientes}">
+            <td th:text="${c.id}"></td>
+            <td th:text="${c.nome}"></td>
+            <td th:text="${c.telefone}"></td>
+            <td th:text="${c.cpf}"></td>
+            <td th:text="${c.endereco}"></td>
+            <td>
+                <a th:href="@{'/clientes/editar/' + ${c.id}}">Editar</a>
+                |
+                <a th:href="@{'/clientes/excluir/' + ${c.id}}"
+                   onclick="return confirm('Deseja excluir este cliente?')">
+                    Excluir
+                </a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+</main>
+
+</body>
+</html>

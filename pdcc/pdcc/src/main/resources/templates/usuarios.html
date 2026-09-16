@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="pt-br"
+      xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="UTF-8">
+    <title>PDCC - Usuários</title>
+
+    <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+
+<body>
+
+<nav>
+    <a th:href="@{/}">Dashboard</a>
+    <a th:href="@{/usuarios}" sec:authorize="hasRole('ADMIN')">Usuários</a>
+    <a th:href="@{/clientes}">Clientes</a>
+    <a th:href="@{/veiculos}">Veículos</a>
+    <a th:href="@{/servicos}">Serviços</a>
+    <a th:href="@{/garantias}">Garantias</a>
+    <a th:href="@{/veiculos/qrcodes}">QR Codes</a>
+
+    <form th:action="@{/logout}" method="post">
+        <button type="submit">Sair</button>
+    </form>
+</nav>
+
+<main>
+
+    <h1>Controle de Usuários</h1>
+
+    <form th:action="@{/usuarios}" th:object="${usuario}" method="post">
+
+        <input type="hidden" th:field="*{id}">
+
+        <label>Nome:</label><br>
+        <input type="text" th:field="*{nome}" required>
+
+        <label>Usuário:</label><br>
+        <input type="text" th:field="*{username}" required>
+
+        <label>Senha:</label><br>
+        <input type="password" th:field="*{password}" required>
+
+        <label>Perfil:</label><br>
+        <select th:field="*{role}" required>
+            <option value="ADMIN">ADMIN</option>
+            <option value="FUNCIONARIO">FUNCIONARIO</option>
+        </select>
+
+        <br>
+        <button type="submit">Salvar Usuário</button>
+
+    </form>
+
+    <h2>Usuários Cadastrados</h2>
+
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Usuário</th>
+            <th>Perfil</th>
+            <th>Ações</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="u : ${usuarios}">
+
+            <td th:text="${u.id}"></td>
+
+            <td th:text="${u.nome}"></td>
+
+            <td th:text="${u.username}"></td>
+
+            <td th:text="${u.role}"></td>
+
+            <td>
+                <a th:href="@{'/usuarios/excluir/' + ${u.id}}"
+                   onclick="return confirm('Deseja excluir este usuário?')">
+                    Excluir
+                </a>
+            </td>
+
+        </tr>
+        </tbody>
+    </table>
+
+</main>
+
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>PDCC - Login</title>
+    <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+<body>
+
+<h1>PDCC - Login Administrativo</h1>
+
+<form th:action="@{/login}" method="post">
+
+    <label>Usuário:</label><br>
+    <input type="text" name="username" required>
+
+    <br><br>
+
+    <label>Senha:</label><br>
+    <input type="password" name="password" required>
+
+    <br><br>
+
+    <button type="submit">Entrar</button>
+
+</form>
+
+<p th:if="${param.error}">
+    Usuário ou senha inválidos.
+</p>
+
+<p th:if="${param.logout}">
+    Você saiu do sistema.
+</p>
+
+</body>
+</html>

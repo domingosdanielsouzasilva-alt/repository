@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="pt-br"
+      xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="UTF-8">
+    <title>PDCC - Veículos</title>
+
+    <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+
+<body>
+
+<nav>
+    <a th:href="@{/}">Dashboard</a>
+    <a th:href="@{/usuarios}" sec:authorize="hasRole('ADMIN')">Usuários</a>
+    <a th:href="@{/clientes}">Clientes</a>
+    <a th:href="@{/veiculos}">Veículos</a>
+    <a th:href="@{/servicos}">Serviços</a>
+    <a th:href="@{/garantias}">Garantias</a>
+    <a th:href="@{/veiculos/qrcodes}">QR Codes</a>
+
+    <form th:action="@{/logout}" method="post">
+        <button type="submit">Sair</button>
+    </form>
+</nav>
+
+<main>
+
+    <h1>Cadastro de Veículos</h1>
+
+    <form th:action="@{/veiculos}" th:object="${veiculo}" method="post">
+
+        <input type="hidden" th:field="*{id}">
+
+        <label>Cliente:</label><br>
+        <select th:field="*{cliente}" required>
+            <option value="">Selecione um cliente</option>
+
+            <option th:each="c : ${clientes}"
+                    th:value="${c.id}"
+                    th:text="${c.nome}">
+            </option>
+        </select>
+
+        <label>Modelo:</label><br>
+        <input type="text" th:field="*{modelo}" required>
+
+        <label>Placa:</label><br>
+        <input type="text" th:field="*{placa}" required>
+
+        <label>Ano:</label><br>
+        <input type="text" th:field="*{ano}">
+
+        <label>Cor:</label><br>
+        <input type="text" th:field="*{cor}">
+
+        <br>
+        <button type="submit">Salvar Veículo</button>
+
+    </form>
+
+    <h2>Veículos Cadastrados</h2>
+
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Cliente</th>
+            <th>Modelo</th>
+            <th>Placa</th>
+            <th>Ano</th>
+            <th>Cor</th>
+            <th>Histórico</th>
+            <th>Consulta</th>
+            <th>Ações</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="v : ${veiculos}">
+
+            <td th:text="${v.id}"></td>
+
+            <td th:text="${v.cliente.nome}"></td>
+
+            <td th:text="${v.modelo}"></td>
+
+            <td th:text="${v.placa}"></td>
+
+            <td th:text="${v.ano}"></td>
+
+            <td th:text="${v.cor}"></td>
+
+            <td>
+                <a th:href="@{'/veiculos/' + ${v.id} + '/historico'}">
+                    Histórico
+                </a>
+            </td>
+
+            <td>
+                <a th:href="@{'/veiculos/' + ${v.id} + '/consulta'}"
+                   target="_blank">
+                    Consulta
+                </a>
+            </td>
+
+            <td>
+                <a th:href="@{'/veiculos/editar/' + ${v.id}}">
+                    Editar
+                </a>
+
+                |
+
+                <a th:href="@{'/veiculos/excluir/' + ${v.id}}"
+                   onclick="return confirm('Deseja excluir este veículo?')">
+                    Excluir
+                </a>
+            </td>
+
+        </tr>
+        </tbody>
+
+    </table>
+
+</main>
+
+</body>
+</html>

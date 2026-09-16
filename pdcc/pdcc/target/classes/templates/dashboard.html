@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pt-br"
+      xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="UTF-8">
+    <title>PDCC - Dashboard</title>
+
+    <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+
+<body>
+
+<nav>
+    <a th:href="@{/}">Dashboard</a>
+    <a th:href="@{/usuarios}" sec:authorize="hasRole('ADMIN')">Usuários</a>
+    <a th:href="@{/clientes}">Clientes</a>
+    <a th:href="@{/veiculos}">Veículos</a>
+    <a th:href="@{/servicos}">Serviços</a>
+    <a th:href="@{/garantias}">Garantias</a>
+    <a th:href="@{/veiculos/qrcodes}">QR Codes</a>
+
+    <form th:action="@{/logout}" method="post">
+        <button type="submit">Sair</button>
+    </form>
+</nav>
+
+<main>
+
+    <h1>PDCC - Painel Inicial</h1>
+
+    <div class="indicadores">
+
+        <div class="indicador">
+            <span>Total de Clientes</span>
+            <strong th:text="${totalClientes}">0</strong>
+        </div>
+
+        <div class="indicador">
+            <span>Total de Veículos</span>
+            <strong th:text="${totalVeiculos}">0</strong>
+        </div>
+
+        <div class="indicador">
+            <span>Total de Serviços</span>
+            <strong th:text="${totalServicos}">0</strong>
+        </div>
+
+    </div>
+
+    <h2>Últimos Serviços Registrados</h2>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Data</th>
+            <th>Cliente</th>
+            <th>Veículo</th>
+            <th>Placa</th>
+            <th>Diagnóstico</th>
+            <th>Garantia</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="s : ${servicos}">
+            <td th:text="${s.dataServico}"></td>
+            <td th:text="${s.veiculo.cliente.nome}"></td>
+            <td th:text="${s.veiculo.modelo}"></td>
+            <td th:text="${s.veiculo.placa}"></td>
+            <td th:text="${s.diagnostico}"></td>
+            <td th:text="${s.garantiaFim}"></td>
+        </tr>
+        </tbody>
+    </table>
+
+</main>
+
+</body>
+</html>

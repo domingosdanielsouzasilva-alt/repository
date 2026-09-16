@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-br"
+      xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="UTF-8">
+    <title>PDCC - QR Codes</title>
+
+    <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+
+<body>
+
+<nav>
+    <a th:href="@{/}">Dashboard</a>
+    <a th:href="@{/usuarios}" sec:authorize="hasRole('ADMIN')">Usuários</a>
+    <a th:href="@{/clientes}">Clientes</a>
+    <a th:href="@{/veiculos}">Veículos</a>
+    <a th:href="@{/servicos}">Serviços</a>
+    <a th:href="@{/garantias}">Garantias</a>
+    <a th:href="@{/veiculos/qrcodes}">QR Codes</a>
+
+    <form th:action="@{/logout}" method="post">
+        <button type="submit">Sair</button>
+    </form>
+</nav>
+
+<main>
+
+    <h1>QR Codes dos Veículos</h1>
+
+    <div class="qrcode-lista">
+
+        <div class="qrcode-card"
+             th:each="v : ${veiculos}">
+
+            <h3 th:text="${v.modelo}">
+                Modelo
+            </h3>
+
+            <p th:text="${v.placa}">
+                Placa
+            </p>
+
+            <img th:src="@{'/veiculos/' + ${v.id} + '/qrcode'}"
+                 width="220"
+                 height="220"
+                 alt="QR Code">
+
+            <br><br>
+
+            <a th:href="@{'/veiculos/' + ${v.id} + '/consulta'}"
+               target="_blank">
+                Abrir Consulta
+            </a>
+
+        </div>
+
+    </div>
+
+</main>
+
+</body>
+</html>

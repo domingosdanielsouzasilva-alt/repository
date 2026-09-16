@@ -1,7 +1,7 @@
 # Etapa 1: Build da aplicação Java com Maven
 FROM maven:3.9.6-eclipse-temurin-17 AS build
 WORKDIR /app
-COPY . .
+COPY pdcc/pdcc/ .
 RUN mvn clean package -DskipTests
 
 # Etapa 2: Execução da aplicação com JDK 17
